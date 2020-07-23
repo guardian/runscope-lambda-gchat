@@ -1,0 +1,50 @@
+{
+  "finished_at": 1595342430.234405,
+  "variables": {},
+  "agent": null,
+  "team_id": "669f1364-3d97-4325-ba34-6ed1a11609d2",
+  "result": "pass",
+  "team_name": "The Guardian",
+  "started_at": 1595342424.062975,
+  "agent_expired": null,
+  "environment_uuid": "d2969a8f-8420-4a41-b2aa-9968e480b57b",
+  "environment_name": "Test Settings",
+  "test_run_url": "https://www.runscope.com/radar/9th6cm2pdypq/63d6cd19-42e1-4ec5-86b3-687bd3a33794/results/4036e918-cb85-4062-9e09-c8a457a808e3",
+  "test_run_id": "4036e918-cb85-4062-9e09-c8a457a808e3",
+  "bucket_key": "9th6cm2pdypq",
+  "region_name": "US California - None",
+  "bucket_name": "support-frontend",
+  "test_name": "Subscriptions showcase page",
+  "test_id": "63d6cd19-42e1-4ec5-86b3-687bd3a33794",
+  "region": "us2",
+  "initial_variables": {},
+  "test_url": "https://www.runscope.com/radar/9th6cm2pdypq/63d6cd19-42e1-4ec5-86b3-687bd3a33794",
+  "trigger_url": "https://api.runscope.com/radar/56447dc9-357e-4ba8-ad8b-827a0bc2adfb/trigger",
+  "requests": [
+    {
+      "response_size_bytes": 11971,
+      "url": "https://support.theguardian.com/uk/subscribe",
+      "variables": {
+        "fail": 0,
+        "total": 0,
+        "pass": 0
+      },
+      "step_type": "request",
+      "note": "",
+      "result": "pass",
+      "response_status_code": "200",
+      "scripts": {
+        "fail": 0,
+        "total": 0,
+        "pass": 0
+      },
+      "method": "GET",
+      "response_time_ms": 598,
+      "assertions": {
+        "fail": 0,
+        "total": 1,
+        "pass": 1
+      }
+    }
+  ]
+}
