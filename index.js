@@ -63,6 +63,24 @@ const getSectionFromRequest = (request) => {
           content: request.response_status_code,
         },
       },
+      {
+        keyValue: {
+          topLabel: "Assertions",
+          content: `${request.assertions.total}`,
+        },
+      },
+      {
+        keyValue: {
+          topLabel: "Passed",
+          content: `${request.assertions.pass}`,
+        },
+      },
+      {
+        keyValue: {
+          topLabel: "Failed",
+          content: `${request.assertions.fail}`,
+        },
+      },
     ],
   };
 };

@@ -73,6 +73,24 @@ test("getSectionFromRequest with successful request", () => {
           content: "200",
         },
       },
+      {
+        keyValue: {
+          topLabel: "Assertions",
+          content: "1",
+        },
+      },
+      {
+        keyValue: {
+          topLabel: "Passed",
+          content: "1",
+        },
+      },
+      {
+        keyValue: {
+          topLabel: "Failed",
+          content: "0",
+        },
+      },
     ],
   });
 });
@@ -129,6 +147,24 @@ test("getSectionFromRequest with failed request", () => {
         keyValue: {
           topLabel: "Response Status Code",
           content: "404",
+        },
+      },
+      {
+        keyValue: {
+          topLabel: "Assertions",
+          content: "2",
+        },
+      },
+      {
+        keyValue: {
+          topLabel: "Passed",
+          content: "0",
+        },
+      },
+      {
+        keyValue: {
+          topLabel: "Failed",
+          content: "2",
         },
       },
     ],
