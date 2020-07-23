@@ -2,11 +2,10 @@
 
 const axios = require("axios");
 
-const blue = "#0000ff";
-const red = "#ed0000";
-const green = "#2ecc71";
-
 const colourForResult = (result) => {
+  const blue = "#0000ff";
+  const red = "#ed0000";
+  const green = "#2ecc71";
   if (result === "pass") {
     return green;
   } else if (result === "fail") {
@@ -34,7 +33,6 @@ const getHeader = (test_name, result) => {
     };
   }
 };
-exports.getHeader = getHeader;
 
 const getSectionFromRequest = (request) => {
   return {
@@ -42,9 +40,9 @@ const getSectionFromRequest = (request) => {
       {
         keyValue: {
           topLabel: "Status",
-          content: `<font color=\"${colourForResult(
+          content: `<font color=\"${colourForResult(request.result)}\">${
             request.result
-          )}\">${request.result}</font>`,
+          }</font>`,
         },
       },
       {
@@ -68,35 +66,10 @@ const getSectionFromRequest = (request) => {
     ],
   };
 };
-exports.getSectionFromRequest = getSectionFromRequest;
 
 const getCards = (webhookData) => {
-  const {
-    test_name,
-    test_url,
-    test_run_url,
-    result,
-    environment_name,
-    region,
-    region_name,
-    requests,
-  } = webhookData;
-  let totalResponseTime = 0;
-  let assertionsTotal = 0;
-  let assertionsPassed = 0;
-  let scriptsTotal = 0;
-  let scriptsPassed = 0;
-  let requestCount = requests.length;
-  let thisResult = result;
-  let my_region_name = region_name.split("-", 1);
+  const { test_name, test_url, test_run_url, result, requests } = webhookData;
 
-  for (let i = 0; i < requests.length; i++) {
-    assertionsTotal += requests[i].assertions.total;
-    assertionsPassed += requests[i].assertions.pass;
-    scriptsTotal += requests[i]["scripts"].total;
-    scriptsPassed += requests[i]["scripts"].pass;
-    totalResponseTime += requests[i].response_time_ms;
-  }
   const requestSections = requests.map((request) =>
     this.getSectionFromRequest(request)
   );
@@ -129,24 +102,28 @@ const getCards = (webhookData) => {
     },
   ];
 };
-exports.getCards = getCards;
 
 const postGchat = (endpointUrl, gchatBody) => {
   axios.defaults.headers.common["Content-Type"] = "application/json";
   return axios.post(endpointUrl, gchatBody);
 };
 
+const lambdaResponse = (statusCode, body) => {
+  return {
+    headers: { "Content-Type": "application/json" },
+    statusCode: statusCode,
+    body: JSON.stringify(body),
+  };
+};
+
 exports.handler = async (event) => {
   console.log(event.body);
 
-  //assign webhook data to variable
-  let webhookData = JSON.parse(event.body);
-  let gchatUrl;
+  const webhookData = JSON.parse(event.body);
 
-  //get gchat url from header
-  if (event.headers.gchaturl) {
-    gchatUrl = event.headers.gchaturl;
-  } else {
+  // the gchat webhook url is passed in as a header
+  const gchatUrl = event.headers.gchaturl;
+  if (!gchatUrl) {
     console.log("no gchat url provided");
   }
 
@@ -155,8 +132,14 @@ exports.handler = async (event) => {
     let gchatPost = await postGchat(gchatUrl, {
       cards: getCards(webhookData),
     });
-    console.log(`Gchat Response Code: ${gchatPost.status}`);
+    console.log(`Gchat Response status: ${gchatPost.status}`);
+    return lambdaResponse(200, "Success");
   } catch (e) {
     console.warn(e);
+    return lambdaResponse(500, `Error posting to Gchat: ${e}`);
   }
 };
+
+exports.getSectionFromRequest = getSectionFromRequest;
+exports.getCards = getCards;
+exports.getHeader = getHeader;
