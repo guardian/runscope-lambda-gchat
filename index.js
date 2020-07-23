@@ -2,7 +2,20 @@
 
 const axios = require("axios");
 
-exports.getHeader = (test_name, result) => {
+const blue = "#0000ff";
+const red = "#ed0000";
+const green = "#2ecc71";
+
+const colourForResult = (result) => {
+  if (result === "pass") {
+    return green;
+  } else if (result === "fail") {
+    return red;
+  }
+  return blue;
+};
+
+const getHeader = (test_name, result) => {
   if (result === "pass") {
     return {
       title: test_name,
@@ -14,15 +27,50 @@ exports.getHeader = (test_name, result) => {
   } else if (result === "fail") {
     return {
       title: test_name,
-      subtitle: `Runscope test for ${test_name} have failed`,
+      subtitle: `Runscope tests failed for ${test_name}`,
       imageUrl:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Antu_vcs-normal.svg/200px-Antu_vcs-normal.svg.png",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Antu_task-reject.svg/200px-Antu_task-reject.svg.png",
       imageStyle: "IMAGE",
     };
   }
 };
+exports.getHeader = getHeader;
 
-exports.getCards = (webhookData) => {
+const getSectionFromRequest = (request) => {
+  return {
+    widgets: [
+      {
+        keyValue: {
+          topLabel: "Status",
+          content: `<font color=\"${colourForResult(
+            request.result
+          )}\">${request.result}</font>`,
+        },
+      },
+      {
+        keyValue: {
+          topLabel: "Url",
+          content: request.url,
+        },
+      },
+      {
+        keyValue: {
+          topLabel: "Method",
+          content: request.method,
+        },
+      },
+      {
+        keyValue: {
+          topLabel: "Response Status Code",
+          content: request.response_status_code,
+        },
+      },
+    ],
+  };
+};
+exports.getSectionFromRequest = getSectionFromRequest;
+
+const getCards = (webhookData) => {
   const {
     test_name,
     test_url,
@@ -49,68 +97,14 @@ exports.getCards = (webhookData) => {
     scriptsPassed += requests[i]["scripts"].pass;
     totalResponseTime += requests[i].response_time_ms;
   }
-  const blue = "#0000ff";
-  const red = "#ed0000";
-  const green = "#2ecc71";
-  let fontColor = blue;
-
-  if (result == "pass") {
-    thisResult = "Passed";
-    fontColor = green;
-  } else if (result == "fail") {
-    thisResult = "Failed";
-    fontColor = red;
-  }
+  const requestSections = requests.map((request) =>
+    this.getSectionFromRequest(request)
+  );
   return [
     {
       header: getHeader(test_name, result),
       sections: [
-        {
-          widgets: [
-            {
-              keyValue: {
-                topLabel: "Status",
-                content: `<font color=\"${fontColor}\">${thisResult}</font>`,
-              },
-            },
-            {
-              keyValue: {
-                topLabel: "Environment",
-                content: environment_name,
-              },
-            },
-            {
-              keyValue: {
-                topLabel: "Location",
-                content: `${region}: ${my_region_name}`,
-              },
-            },
-            {
-              keyValue: {
-                topLabel: "RequestsExecuted",
-                content: `${requests.length}`,
-              },
-            },
-            {
-              keyValue: {
-                topLabel: "AssertionsPassed",
-                content: `${assertionsPassed} of ${assertionsTotal}`,
-              },
-            },
-            {
-              keyValue: {
-                topLabel: "ScriptsPassed",
-                content: `${scriptsPassed} of ${scriptsTotal}`,
-              },
-            },
-            {
-              keyValue: {
-                topLabel: "TotalResponseTime",
-                content: `${totalResponseTime}`,
-              },
-            },
-          ],
-        },
+        ...requestSections,
         {
           widgets: [
             {
@@ -135,6 +129,7 @@ exports.getCards = (webhookData) => {
     },
   ];
 };
+exports.getCards = getCards;
 
 const postGchat = (endpointUrl, gchatBody) => {
   axios.defaults.headers.common["Content-Type"] = "application/json";
