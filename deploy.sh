@@ -1,4 +1,3 @@
-# rm Archive.zip
 zip Archive.zip ./index.js
 zip Archive.zip ./package.json
 # zip -r Archive.zip node_modules/
