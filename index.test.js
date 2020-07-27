@@ -51,44 +51,14 @@ test("getSectionFromRequest with successful request", () => {
     widgets: [
       {
         keyValue: {
-          topLabel: "Status",
-          content: `<font color=\"#2ecc71\">pass</font>`,
-        },
-      },
-      {
-        keyValue: {
           topLabel: "Url",
           content: "https://support.theguardian.com/uk/subscribe",
         },
       },
       {
         keyValue: {
-          topLabel: "Method",
-          content: "GET",
-        },
-      },
-      {
-        keyValue: {
-          topLabel: "Response Status Code",
-          content: "200",
-        },
-      },
-      {
-        keyValue: {
-          topLabel: "Assertions",
-          content: "1",
-        },
-      },
-      {
-        keyValue: {
-          topLabel: "Passed",
-          content: "1",
-        },
-      },
-      {
-        keyValue: {
-          topLabel: "Failed",
-          content: "0",
+          topLabel: "Status",
+          content: `<font color=\"#2ecc71\">pass</font>`,
         },
       },
     ],
@@ -127,44 +97,20 @@ test("getSectionFromRequest with failed request", () => {
     widgets: [
       {
         keyValue: {
-          topLabel: "Status",
-          content: `<font color=\"#ed0000\">fail</font>`,
-        },
-      },
-      {
-        keyValue: {
           topLabel: "Url",
           content: "https://support.theguardian.com/uk/digital",
         },
       },
       {
         keyValue: {
-          topLabel: "Method",
-          content: "GET",
+          topLabel: "Status",
+          content: `<font color=\"#ed0000\">fail</font>`,
         },
       },
       {
         keyValue: {
           topLabel: "Response Status Code",
           content: "404",
-        },
-      },
-      {
-        keyValue: {
-          topLabel: "Assertions",
-          content: "2",
-        },
-      },
-      {
-        keyValue: {
-          topLabel: "Passed",
-          content: "0",
-        },
-      },
-      {
-        keyValue: {
-          topLabel: "Failed",
-          content: "2",
         },
       },
     ],

@@ -35,54 +35,32 @@ const getHeader = (test_name, result) => {
 };
 
 const getSectionFromRequest = (request) => {
+  const widgets = [
+    {
+      keyValue: {
+        topLabel: "Url",
+        content: request.url,
+      },
+    },
+    {
+      keyValue: {
+        topLabel: "Status",
+        content: `<font color=\"${colourForResult(request.result)}\">${
+          request.result
+        }</font>`,
+      },
+    }, 
+    request.result === "fail" ? {
+      keyValue: {
+        topLabel: "Response Status Code",
+        content: request.response_status_code,
+      },
+    } : null,
+  ]; 
+   
   return {
-    widgets: [
-      {
-        keyValue: {
-          topLabel: "Status",
-          content: `<font color=\"${colourForResult(request.result)}\">${
-            request.result
-          }</font>`,
-        },
-      },
-      {
-        keyValue: {
-          topLabel: "Url",
-          content: request.url,
-        },
-      },
-      {
-        keyValue: {
-          topLabel: "Method",
-          content: request.method,
-        },
-      },
-      {
-        keyValue: {
-          topLabel: "Response Status Code",
-          content: request.response_status_code,
-        },
-      },
-      {
-        keyValue: {
-          topLabel: "Assertions",
-          content: `${request.assertions.total}`,
-        },
-      },
-      {
-        keyValue: {
-          topLabel: "Passed",
-          content: `${request.assertions.pass}`,
-        },
-      },
-      {
-        keyValue: {
-          topLabel: "Failed",
-          content: `${request.assertions.fail}`,
-        },
-      },
-    ],
-  };
+    widgets: widgets.filter(e => e !== null)
+  }
 };
 
 const getCards = (webhookData) => {
@@ -108,8 +86,8 @@ const getCards = (webhookData) => {
                 },
                 {
                   textButton: {
-                    text: "Edit Test",
-                    onClick: { openLink: { url: test_url } },
+                    text: "Documentation",
+                    onClick: { openLink: { url: "https://github.com/guardian/support-frontend/wiki/Runscope-Testing" } },
                   },
                 },
               ],
