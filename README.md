@@ -4,7 +4,7 @@ Custom Google chat notifications for Runscope
 This utility is an node.js AWS Lambda function to be used in conjunction with Runscope for custom Google chat notifications. It will send a custom notification via the Google chat 'Incoming Webhook' functionality
 
 ## How to use
-### In Google Chat
+### Configure the Incoming Webhook in Google Chat
 - Set up an Incoming Webhook for the channel you want to notify as described [in this document](https://developers.google.com/hangouts/chat/how-tos/webhooks)
 - Make a note of the webhook url for use in the next step
 
